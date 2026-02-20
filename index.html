@@ -26,11 +26,36 @@
       margin-top: 1rem;
       font-size: 0.9rem;
       letter-spacing: 0.1em;
+
+      #status {
+        margin-top: 2rem;
+        color: #00E5FF;
+        font-size: 0.75rem;
+        letter-spacing: 0.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .dot {
+        width:8px;
+        height:8px;
+        background: #00E5FF;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0% {opacity:1;},
+        50% {opacity:0.2;},
+        100% {opacity:1;
+      }
       }
     </style>
   </head>
 <body>
   <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
   <p>Day 1 complete — Git, GitHub, VS Code, Live Server. All systems go.</p>
+  <div id="status">
+    <span class="dot">System Online</span>
+  </div>
 </body>
 </html>
