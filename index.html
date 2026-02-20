@@ -26,6 +26,7 @@
       margin-top: 1rem;
       font-size: 0.9rem;
       letter-spacing: 0.1em;
+      }
 
       #status {
         margin-top: 2rem;
@@ -44,18 +45,36 @@
         animation: pulse 1.5s infinite;
       }
       @keyframes pulse {
-        0% {opacity:1;},
-        50% {opacity:0.2;},
-        100% {opacity:1;
-      }
+        0% {opacity:1;}
+        50% {opacity:0.2;}
+        100% {opacity:1;}
       }
     </style>
   </head>
 <body>
   <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
-  <p>Day 1 complete — Git, GitHub, VS Code, Live Server. All systems go.</p>
+  <p>Starting a solar system browser project.</p>
   <div id="status">
     <span class="dot">System Online</span>
   </div>
+  <script>
+    //Planet data in variables
+    const sunColor = "#FDB813";
+    const sunRadius = 40;
+    const planetCount = 9;
+
+  //status element in the DOM:
+  const statusDiv = document.getElementById('status');
+
+  //change of text
+  statusDiv.innerHTML = '<span class="dot"></span> '
+  + planetCount
+  + ' planets detected. All systems online.';
+
+  //log to console
+  console.log("Sun color:",sunColor);
+  console.log("Sun radius:",sunRadius);
+  console.log("Planet Count:",planetCount);
+  </script>
 </body>
 </html>
