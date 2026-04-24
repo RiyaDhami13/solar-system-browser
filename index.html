@@ -1,80 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Solar System Browser</title>
-    <style>
-      body {
-        background: #020510;
-        color:white;
-        font-family: monospace;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-      }
 
-      h1 {
-        font-size: 1.8rem;
-        color: #F5C842;
-        letter-spacing: 0.15rem;
-      }
+<head>
+  <meta charset="UTF-8">
+  <title>Solar System Browser</title>
+  <style>
 
-      p{ color: rgba(200, 223, 245, 0.6);
+    body {
+      background: #020510;
+      color: white;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #F5C842;
+      letter-spacing: 0.15em;
+    }
+
+    p {
+      color: rgba(200, 223, 245, 0.6);
       margin-top: 1rem;
       font-size: 0.9rem;
       letter-spacing: 0.1em;
-      }
+    }
 
-      #status {
-        margin-top: 2rem;
-        color: #00E5FF;
-        font-size: 0.75rem;
-        letter-spacing: 0.2rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      .dot {
-        width:8px;
-        height:8px;
-        background: #00E5FF;
-        border-radius: 50%;
-        animation: pulse 1.5s infinite;
-      }
-      @keyframes pulse {
-        0% {opacity:1;}
-        50% {opacity:0.2;}
-        100% {opacity:1;}
-      }
-    </style>
-  </head>
+    #status {
+      margin-top: 2rem;
+      color: #00E5FF;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #00E5FF;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 1; }
+      50%  { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+  </style>
+</head>
+
 <body>
+
   <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
   <p>Starting a solar system browser project.</p>
+
   <div id="status">
-    <span class="dot">System Online</span>
+    <span class="dot"></span>
+    Systems Online
   </div>
+
   <script>
-    //Planet data in variables
+
+    // Planet data in variables
     const sunColor = "#FDB813";
     const sunRadius = 40;
     const planetCount = 9;
 
-  //status element in the DOM:
-  const statusDiv = document.getElementById('status');
+    // Find the status element in the DOM
+    const statusDiv = document.getElementById('status');
 
-  //change of text
-  statusDiv.innerHTML = '<span class="dot"></span> '
-  + planetCount
-  + ' planets detected. All systems online.';
+    // Change its text using JavaScript
+    statusDiv.innerHTML = '<span class="dot"></span> '
+      + planetCount
+      + ' planets detected. All systems online.';
 
-  //log to console
-  console.log("Sun color:",sunColor);
-  console.log("Sun radius:",sunRadius);
-  console.log("Planet Count:",planetCount);
+    // Log to console
+    console.log("Sun color:", sunColor);
+    console.log("Sun radius:", sunRadius);
+    console.log("Planet count:", planetCount);
+
   </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Solar System Browser</title>
+  <style>
+
+    body {
+      background: #020510;
+      color: white;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #F5C842;
+      letter-spacing: 0.15em;
+    }
+
+    p {
+      color: rgba(200, 223, 245, 0.6);
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+    }
+
+    #status {
+      margin-top: 2rem;
+      color: #00E5FF;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #00E5FF;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 1; }
+      50%  { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
+  <p>Starting a solar system browser project.</p>
+
+  <div id="status">
+    <span class="dot"></span>
+    Systems Online
+  </div>
+
+  <script>
+
+    // Planet data in variables
+    const sunColor = "#FDB813";
+    const sunRadius = 40;
+    const planetCount = 9;
+
+    // Find the status element in the DOM
+    const statusDiv = document.getElementById('status');
+
+    // Change its text using JavaScript
+    statusDiv.innerHTML = '<span class="dot"></span> '
+      + planetCount
+      + ' planets detected. All systems online.';
+
+    // Log to console
+    console.log("Sun color:", sunColor);
+    console.log("Sun radius:", sunRadius);
+    console.log("Planet count:", planetCount);
+
+  </script>
+
 </body>
 </html>
