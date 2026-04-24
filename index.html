@@ -143,14 +143,17 @@
         name: 'Mercury',
         fact: 'Closest planet to the Sun. A year lasts just 88 Earth days.',
         temp: '-180 to 430 °C',
-        moons: 0
+        moons: 0,
+        type: 'rocky'
+
       },
       {
         id: 'venus',
         name: 'Venus',
-        fact: 'Hottest planet at 465°C average. Rotates backwards.',
+        fact: 'Hottest planet. Rotates backwards.',
         temp: '465 °C average',
-        moons: 0
+        moons: 0,
+        type: 'rocky'
       },
       {
         id: 'earth',
@@ -164,35 +167,41 @@
         name: 'Mars',
         fact: 'Home to Olympus Mons — tallest volcano in the solar system.',
         temp: '-63 °C average',
-        moons: 2
+        moons: 2,
+        type: 'rocky'
+
       },
       {
         id: 'jupiter',
         name: 'Jupiter',
-        fact: 'Largest planet. The Great Red Spot is a storm older than 350 years.',
+        fact: 'The Great Red Spot is a storm older than 350 years.',
         temp: '-110 °C cloud tops',
-        moons: 95
+        moons: 95,
+        type: 'gas_giant'
       },
       {
         id: 'saturn',
         name: 'Saturn',
-        fact: 'Its rings are made of ice and rock. Only 100 million years old.',
+        fact: 'Rings are made of ice and rock. Only 100 million years old.',
         temp: '-140 °C cloud tops',
-        moons: 146
+        moons: 146,
+        type: 'gas_giant'
       },
       {
         id: 'uranus',
         name: 'Uranus',
         fact: 'Rotates on its side — axial tilt of 97.8 degrees.',
         temp: '-197 °C average',
-        moons: 28
+        moons: 28,
+        type: 'ice_giant'
       },
       {
         id: 'neptune',
         name: 'Neptune',
         fact: 'Fastest winds in the solar system — over 2,100 km/h.',
         temp: '-201 °C average',
-        moons: 16
+        moons: 16,
+        type: 'ice_giant'
       }
     ];
 
@@ -201,50 +210,67 @@
     const infoBox      = document.getElementById('info-box');
     const statusText   = document.getElementById('status-text');
 
+//Build planet buttons
+planets.forEach(planet => {
+  const btn = document.createElement('button');
+  btn.className = 'planet-btn';
+  btn.dataset.id = planet.id;
+  btn.textContent = planet.name;
+  planetNav.appendChild(btn);
+});
+
+
     // ── Select Planet Function ───────────────────
     function selectPlanet(planetId) {
 
       // Find matching planet in array
-      const planet = planets.find(function(p) {
-        return p.id === planetId;
-      });
+      const planet = planets.find(p => p.id === planetId);
+    if (!planet) return;
+  
+    //Update info box
+    infoBox.innerHTML =
+    'div class="planet-name">' + planet.name + '</div>' +
+    '<div class="planet-fact">' + planet.fact + '</div>' +
+    '<div class="planet-fact">Temp: ' + planet.temp + '</div>' +
+    '<div class="planet-fact">Moons: ' + planet.moons + '</div>';
+    '<div class="planet-fact">Type: ' + planet.type + '</div>';
+  
+  //Update status
+  statusText.innerHTML = planet.name + ' selected.';
 
-      // Stop if nothing found
-      if (!planet) return;
+  //toggle active class
+  document.querySelectorAll('.planet-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector('[data-id="' + planetId + '"]')
+      ?.classList.add('active');
+  }
 
-      // Update info box
-      infoBox.innerHTML =
-        '<div class="planet-name">' + planet.name + '</div>' +
-        '<div class="planet-fact">' + planet.fact + '</div>' +
-        '<div class="planet-fact">Temp: ' + planet.temp + '</div>' +
-        '<div class="planet-fact">Moons: ' + planet.moons + '</div>';
+  //Event Delegation
+  planetNav.addEventListener('click', event => {
+    const planetId = event.target.dataset.id;
+    if(planetId) selectPlanet(planetId);
+  });
 
-      // Update status
-      statusText.innerHTML = planet.name + ' selected — data loaded.';
-
-      // Remove active from all buttons
-      document.querySelectorAll('.planet-btn').forEach(function(btn) {
-        btn.classList.remove('active');
-      });
-
-      // Add active to clicked button
-      const activeButton = document.querySelector('[data-id="' + planetId + '"]');
-      if (activeButton) activeButton.classList.add('active');
+  //Keyboard Support
+  document.addEventListener('keydown', event = > {
+    const index = parseInt(event.key)-1;
+    if(index >= 0 && index < planets.length){
+      selectPlanet(planets[index].id);
     }
+  });
 
-    // ── Event Listener ───────────────────────────
-    planetNav.addEventListener('click', function(event) {
-      const planetId = event.target.dataset.id;
-      if (planetId) selectPlanet(planetId);
-    });
+  //Filter gas giants
+  const gasGiants = planets.filter(p => p.type == 'gas_giant');
+  console.log('Gas Giants:',gasGiants);
 
-    // ── Keyboard Support ─────────────────────────
-    document.addEventListener('keydown', function(event) {
-      const index = parseInt(event.key) - 1;
-      if (index >= 0 && index < planets.length) {
-        selectPlanet(planets[index].id);
-      }
-    });
+  //Moon Counts
+  const moonCounts = planets.map(p => p.name + ': ' + p.moons + 'moons');
+  console.log('Moon Counts:',moonCounts);
+
+  //Planets with Moons
+  const hasMoons = planets.filter(p => p.moons > 0);
+  console.log('Planets with Moons:',hasMoons.length);
 
   </script>
 
