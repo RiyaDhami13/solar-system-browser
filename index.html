@@ -16,6 +16,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      gap: 1rem;
     }
 
     h1 {
@@ -24,119 +25,76 @@
       letter-spacing: 0.15em;
     }
 
-    p {
-      color: rgba(200, 223, 245, 0.6);
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
-    }
-
-    #status {
-      margin-top: 2rem;
-      color: #00E5FF;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: #00E5FF;
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%   { opacity: 1; }
-      50%  { opacity: 0.2; }
-      100% { opacity: 1; }
-    }
-
-  </style>
-</head>
-
-<body>
-
-  <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
-  <p>Starting a solar system browser project.</p>
-
-  <div id="status">
-    <span class="dot"></span>
-    Systems Online
-  </div>
-
-  <script>
-
-    // Planet data in variables
-    const sunColor = "#FDB813";
-    const sunRadius = 40;
-    const planetCount = 9;
-
-    // Find the status element in the DOM
-    const statusDiv = document.getElementById('status');
-
-    // Change its text using JavaScript
-    statusDiv.innerHTML = '<span class="dot"></span> '
-      + planetCount
-      + ' planets detected. All systems online.';
-
-    // Log to console
-    console.log("Sun color:", sunColor);
-    console.log("Sun radius:", sunRadius);
-    console.log("Planet count:", planetCount);
-
-  </script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Solar System Browser</title>
-  <style>
-
-    body {
-      background: #020510;
-      color: white;
+    .planet-btn {
+      padding: 0.5rem 1.2rem;
+      background: rgba(0, 229, 255, 0.07);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      color: rgba(200, 223, 245, 0.7);
+      border-radius: 20px;
+      cursor: pointer;
       font-family: monospace;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      color: #F5C842;
-      letter-spacing: 0.15em;
-    }
-
-    p {
-      color: rgba(200, 223, 245, 0.6);
-      margin-top: 1rem;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       letter-spacing: 0.1em;
+      transition: all 0.25s;
+    }
+
+    .planet-btn:hover {
+      background: rgba(245, 200, 66, 0.12);
+      border-color: rgba(245, 200, 66, 0.5);
+      color: #F5C842;
+    }
+
+    .planet-btn.active {
+      background: rgba(245, 200, 66, 0.15);
+      border-color: #F5C842;
+      color: #F5C842;
+    }
+
+    #planet-nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 600px;
+    }
+
+    #info-box {
+      margin-top: 1rem;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 229, 255, 0.05);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 8px;
+      text-align: center;
+      min-width: 300px;
+      transition: all 0.3s;
+    }
+
+    #info-box .planet-name {
+      font-size: 1.2rem;
+      color: #F5C842;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    #info-box .planet-fact {
+      font-size: 0.78rem;
+      color: rgba(200, 223, 245, 0.6);
+      line-height: 1.8;
     }
 
     #status {
-      margin-top: 2rem;
-      color: #00E5FF;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-size: 0.7rem;
+      color: #00E5FF;
+      letter-spacing: 0.15em;
+      margin-top: 0.5rem;
     }
 
     .dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background: #00E5FF;
       border-radius: 50%;
       animation: pulse 1.5s infinite;
@@ -154,32 +112,139 @@
 <body>
 
   <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
-  <p>Starting a solar system browser project.</p>
+
+  <div id="planet-nav">
+    <button class="planet-btn" data-id="mercury">Mercury</button>
+    <button class="planet-btn" data-id="venus">Venus</button>
+    <button class="planet-btn" data-id="earth">Earth</button>
+    <button class="planet-btn" data-id="mars">Mars</button>
+    <button class="planet-btn" data-id="jupiter">Jupiter</button>
+    <button class="planet-btn" data-id="saturn">Saturn</button>
+    <button class="planet-btn" data-id="uranus">Uranus</button>
+    <button class="planet-btn" data-id="neptune">Neptune</button>
+  </div>
+
+  <div id="info-box">
+    <div class="planet-name">Select a Planet</div>
+    <div class="planet-fact">Click any planet above to see its data</div>
+  </div>
 
   <div id="status">
     <span class="dot"></span>
-    Systems Online
+    <span id="status-text">9 planets detected. All systems online.</span>
   </div>
 
   <script>
 
-    // Planet data in variables
-    const sunColor = "#FDB813";
-    const sunRadius = 40;
-    const planetCount = 9;
+    // ── Planet Data ──────────────────────────────
+    const planets = [
+      {
+        id: 'mercury',
+        name: 'Mercury',
+        fact: 'Closest planet to the Sun. A year lasts just 88 Earth days.',
+        temp: '-180 to 430 °C',
+        moons: 0
+      },
+      {
+        id: 'venus',
+        name: 'Venus',
+        fact: 'Hottest planet at 465°C average. Rotates backwards.',
+        temp: '465 °C average',
+        moons: 0
+      },
+      {
+        id: 'earth',
+        name: 'Earth',
+        fact: 'Only known planet with life. 71% covered in liquid water.',
+        temp: '15 °C average',
+        moons: 1
+      },
+      {
+        id: 'mars',
+        name: 'Mars',
+        fact: 'Home to Olympus Mons — tallest volcano in the solar system.',
+        temp: '-63 °C average',
+        moons: 2
+      },
+      {
+        id: 'jupiter',
+        name: 'Jupiter',
+        fact: 'Largest planet. The Great Red Spot is a storm older than 350 years.',
+        temp: '-110 °C cloud tops',
+        moons: 95
+      },
+      {
+        id: 'saturn',
+        name: 'Saturn',
+        fact: 'Its rings are made of ice and rock. Only 100 million years old.',
+        temp: '-140 °C cloud tops',
+        moons: 146
+      },
+      {
+        id: 'uranus',
+        name: 'Uranus',
+        fact: 'Rotates on its side — axial tilt of 97.8 degrees.',
+        temp: '-197 °C average',
+        moons: 28
+      },
+      {
+        id: 'neptune',
+        name: 'Neptune',
+        fact: 'Fastest winds in the solar system — over 2,100 km/h.',
+        temp: '-201 °C average',
+        moons: 16
+      }
+    ];
 
-    // Find the status element in the DOM
-    const statusDiv = document.getElementById('status');
+    // ── DOM References ───────────────────────────
+    const planetNav    = document.getElementById('planet-nav');
+    const infoBox      = document.getElementById('info-box');
+    const statusText   = document.getElementById('status-text');
 
-    // Change its text using JavaScript
-    statusDiv.innerHTML = '<span class="dot"></span> '
-      + planetCount
-      + ' planets detected. All systems online.';
+    // ── Select Planet Function ───────────────────
+    function selectPlanet(planetId) {
 
-    // Log to console
-    console.log("Sun color:", sunColor);
-    console.log("Sun radius:", sunRadius);
-    console.log("Planet count:", planetCount);
+      // Find matching planet in array
+      const planet = planets.find(function(p) {
+        return p.id === planetId;
+      });
+
+      // Stop if nothing found
+      if (!planet) return;
+
+      // Update info box
+      infoBox.innerHTML =
+        '<div class="planet-name">' + planet.name + '</div>' +
+        '<div class="planet-fact">' + planet.fact + '</div>' +
+        '<div class="planet-fact">Temp: ' + planet.temp + '</div>' +
+        '<div class="planet-fact">Moons: ' + planet.moons + '</div>';
+
+      // Update status
+      statusText.innerHTML = planet.name + ' selected — data loaded.';
+
+      // Remove active from all buttons
+      document.querySelectorAll('.planet-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+
+      // Add active to clicked button
+      const activeButton = document.querySelector('[data-id="' + planetId + '"]');
+      if (activeButton) activeButton.classList.add('active');
+    }
+
+    // ── Event Listener ───────────────────────────
+    planetNav.addEventListener('click', function(event) {
+      const planetId = event.target.dataset.id;
+      if (planetId) selectPlanet(planetId);
+    });
+
+    // ── Keyboard Support ─────────────────────────
+    document.addEventListener('keydown', function(event) {
+      const index = parseInt(event.key) - 1;
+      if (index >= 0 && index < planets.length) {
+        selectPlanet(planets[index].id);
+      }
+    });
 
   </script>
 
