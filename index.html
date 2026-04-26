@@ -114,14 +114,6 @@
   <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
 
   <div id="planet-nav">
-    <button class="planet-btn" data-id="mercury">Mercury</button>
-    <button class="planet-btn" data-id="venus">Venus</button>
-    <button class="planet-btn" data-id="earth">Earth</button>
-    <button class="planet-btn" data-id="mars">Mars</button>
-    <button class="planet-btn" data-id="jupiter">Jupiter</button>
-    <button class="planet-btn" data-id="saturn">Saturn</button>
-    <button class="planet-btn" data-id="uranus">Uranus</button>
-    <button class="planet-btn" data-id="neptune">Neptune</button>
   </div>
 
   <div id="info-box">
@@ -158,9 +150,10 @@
       {
         id: 'earth',
         name: 'Earth',
-        fact: 'Only known planet with life. 71% covered in liquid water.',
+        fact: 'Only known planet with life.',
         temp: '15 °C average',
-        moons: 1
+        moons: 1,
+        type: 'rocky'
       },
       {
         id: 'mars',
@@ -229,11 +222,11 @@ planets.forEach(planet => {
   
     //Update info box
     infoBox.innerHTML =
-    'div class="planet-name">' + planet.name + '</div>' +
+    '<div class="planet-name">' + planet.name + '</div>' +
     '<div class="planet-fact">' + planet.fact + '</div>' +
     '<div class="planet-fact">Temp: ' + planet.temp + '</div>' +
-    '<div class="planet-fact">Moons: ' + planet.moons + '</div>';
-    '<div class="planet-fact">Type: ' + planet.type + '</div>';
+    '<div class="planet-fact">Moons: ' + planet.moons + '</div>' +
+    '<div class="planet-fact">Type: '  + planet.type  + '</div>';
   
   //Update status
   statusText.innerHTML = planet.name + ' selected.';
@@ -253,9 +246,9 @@ planets.forEach(planet => {
   });
 
   //Keyboard Support
-  document.addEventListener('keydown', event = > {
-    const index = parseInt(event.key)-1;
-    if(index >= 0 && index < planets.length){
+  document.addEventListener('keydown', event => {
+    const index = parseInt(event.key) - 1;
+    if (index >= 0 && index < planets.length) {
       selectPlanet(planets[index].id);
     }
   });
