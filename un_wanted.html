@@ -1,0 +1,108 @@
+   h1 {
+      font-size: 1.8rem;
+      color: #F5C842;
+      letter-spacing: 0.15em;
+    }
+
+    .planet-btn {
+      padding: 0.5rem 1.2rem;
+      background: rgba(0, 229, 255, 0.07);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      color: rgba(200, 223, 245, 0.7);
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      transition: all 0.25s;
+    }
+
+    .planet-btn:hover {
+      background: rgba(245, 200, 66, 0.12);
+      border-color: rgba(245, 200, 66, 0.5);
+      color: #F5C842;
+    }
+
+    .planet-btn.active {
+      background: rgba(245, 200, 66, 0.15);
+      border-color: #F5C842;
+      color: #F5C842;
+    }
+
+    #planet-nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 600px;
+    }
+
+    #info-box {
+      margin-top: 1rem;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 229, 255, 0.05);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 8px;
+      text-align: center;
+      min-width: 300px;
+      transition: all 0.3s;
+    }
+
+    #info-box .planet-name {
+      font-size: 1.2rem;
+      color: #F5C842;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    #info-box .planet-fact {
+      font-size: 0.78rem;
+      color: rgba(200, 223, 245, 0.6);
+      line-height: 1.8;
+    }
+
+    #status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      color: #00E5FF;
+      letter-spacing: 0.15em;
+      margin-top: 0.5rem;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: #00E5FF;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 1; }
+      50%  { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+
+
+ /*inside body */
+ 
+  <h1>&#9728; SOLAR SYSTEM BROWSER</h1>
+
+  <div id="planet-nav">
+  </div>
+
+  <div id="info-box">
+    <div class="planet-name">Select a Planet</div>
+    <div class="planet-fact">Click any planet above to see its data</div>
+  </div>
+
+  <div id="status">
+    <span class="dot"></span>
+    <span id="status-text">9 planets detected. All systems online.</span>
+  </div>
+
+  /*inside script */
+  
