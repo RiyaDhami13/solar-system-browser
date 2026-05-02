@@ -298,37 +298,7 @@
 
     // Start
     animate();
-    import React, { useRef } from 'react';
-    import { useFrame } from '@react-three/fiber';
-
-    const Planet = ({ orbitRadius, speed, color, size, name }) => {
-      const ref = useRef()
-      const orbitRef = useRef()
-
-      useFrame(({clock}) => {
-        const t = clock.getElapsedTime() * speed;
-        const x = Math.cos(t) * orbitRadius;
-        const z = Math.sin(t) * orbitRadius;
-
-        meshRef.current.position.set(x, 0, z);
-      })
     
-  return (
-    <group>
-      {/* Orbit ring */}
-      <mesh rotation= {[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[orbitRadius, orbitRadius + 0.2, 64]} />
-        <meshBasicMaterial color="white" transparent opacity={0.1} />
-        </mesh>
-
-{/* The Planet Body */}
-<mesh ref = {meshRef}>
-  <sphereGeometry args = {[size,32,32]}/>
-  <meshStrandardMaterial color={color} />
-  </mesh>
-    </group>
-  )
-    }
 
   </script>
 
