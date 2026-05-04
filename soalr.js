@@ -98,3 +98,136 @@ function drawOrbitRing(cx,cy,planet) {
 }
 
 //drawing planets
+function drawPlanet(cx,cy,planet) {
+  const scaledOrbit = planet.OrbitRadius * zoomLevel;
+  const scaledRadius = Math.max(planet.radius * zoomLevel,2);
+
+  const x = cx + Math.cos(planet.angle) * scaledOrbit;
+  const y = cy + Math.sin(planet.angle) * scaledOrbit;
+
+  planet.screenX = x;
+  planet.screenY = y;
+
+  const dist = getDistance(mouseX, mouseY, x, y);
+  const isHovered = dist < scaledRadius + 8;
+
+  if(isHovered || selectedPlanet?.id === planet.id) {
+    const glow = ctx.createRadialGradient(x, y, 0, x, y, scaledRadius * 3);
+    glow.addColorStop(0,planet.color+'55');
+    glow.addColorStop(0,planet.color+'00');
+    ctx.beginPath();
+    ctx.arc(x, y, scaledRadius * 3, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+  }
+
+  ctx.beginPath();
+  ctx.arc(x,y,scaledRadius, 0, Math.PI * 2);
+  ctx.fillStyle = planet.color;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(
+    x - scaledRadius * 0.3,
+    y - scaledRadius * 0.3,
+    scaledRadius * 0.25,
+    0, Math.PI * 2
+  );
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.fill();
+
+  if(planet.id === 'saturn') {
+    ctx.beginPath();
+    ctx.ellipse(x, y, scaledRadius * 2.2, scaledRadius * 0.5, 0.4, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(228,209,145,0.55)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  if (isHovered) hoveredPlanet = planet;
+  return isHovered;
+}
+
+//show Planet info
+function showPlanetInfo(planet) {
+  pName.textContent   = planet.name;
+  pPeriod.textContent = planet.period;
+  pTemp.textContent   = planet.temp;
+  pMoons.textContent  = planet.moons;
+  pType.textContent   = planet.type;
+  infoPanel.classList.add('visible');
+}
+
+//updating planets
+function updatePlanets() {
+  if (isPaused) return;
+  planets.forEach(p => { p.angle += p.speed * speedMult; });
+}
+
+//render loop
+function animate() {
+  const center = getCenter();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hoveredPlanet = null;
+
+  drawStars();
+  planets.forEach(p => drawOrbitRing(center.x, center.y, p));
+  drawSun(center.x, center.y);
+  planets.forEach(p => drawPlanet(center.x, center.y, p));
+
+  if (hoveredPlanet) {
+    tooltip.textContent   = hoveredPlanet.name;
+    tooltip.style.opacity = '1';
+    canvas.style.cursor   = 'pointer';
+  } else {
+    tooltip.style.opacity = '0';
+    canvas.style.cursor   = 'default';
+  }
+
+  updatePlanets();
+  requestAnimationFrame(animate);
+}
+
+//events
+canvas.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+canvas.addEventListener('click', () => {
+  if (hoveredPlanet) {
+    selectedPlanet = hoveredPlanet;
+    showPlanetInfo(hoveredPlanet);
+  }
+});
+
+canvas.addEventListener('wheel', e => {
+  zoomLevel = Math.max(0.4, Math.min(2.5, zoomLevel + e.deltaY * -0.001));
+}, { passive: true });
+
+pauseBtn.addEventListener('click', () => {
+  isPaused = !isPaused;
+  pauseBtn.textContent = isPaused ? '▶ Resume' : '⏸ Pause';
+});
+
+resetBtn.addEventListener('click', () => {
+  planets.forEach((p, i) => { p.angle = i * 0.8; });
+  zoomLevel      = 1;
+  selectedPlanet = null;
+  infoPanel.classList.remove('visible');
+});
+
+speedSlider.addEventListener('input', e => {
+  speedMult = parseFloat(e.target.value);
+});
+
+document.addEventListener('keydown', e => {
+  const index = parseInt(e.key) - 1;
+  if (index >= 0 && index < planets.length) {
+    selectedPlanet = planets[index];
+    showPlanetInfo(planets[index]);
+  }
+});
+
+//starting
+animate();
