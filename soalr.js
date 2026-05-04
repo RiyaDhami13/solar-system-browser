@@ -27,7 +27,7 @@ function getCenter() {
 
 //Planet Data
 const Planets = [
-   { id:'mercury', name:'Mercury', orbitRadius:80,  radius:4,  color:'#B5B5B5', speed:0.0400, angle:0.0, period:'88 days',   temp:'-180 to 430°C', moons:0,   type:'Rocky'    },
+  { id:'mercury', name:'Mercury', orbitRadius:80,  radius:4,  color:'#B5B5B5', speed:0.0400, angle:0.0, period:'88 days',   temp:'-180 to 430°C', moons:0,   type:'Rocky'    },
   { id:'venus',   name:'Venus',   orbitRadius:120, radius:8,  color:'#E8C06B', speed:0.0160, angle:1.2, period:'225 days',  temp:'465°C avg',     moons:0,   type:'Rocky'    },
   { id:'earth',   name:'Earth',   orbitRadius:165, radius:9,  color:'#4B9CD3', speed:0.0100, angle:2.5, period:'365 days',  temp:'15°C avg',      moons:1,   type:'Rocky'    },
   { id:'mars',    name:'Mars',    orbitRadius:215, radius:6,  color:'#C1440E', speed:0.0050, angle:0.8, period:'687 days',  temp:'-63°C avg',     moons:2,   type:'Rocky'    },
