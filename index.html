@@ -148,7 +148,71 @@ const starMaterial = new THREE.PointsMaterial({ color: 0xffffff,
 const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
+ // ORBIT CONTROLS — manual implementation
 
+  let isDragging = false;
+  let prevMouseX = 0;
+  let prevMouseY = 0;
+  let cameraTheta = Math.PI / 8;
+  let cameraPhi = Math.PI / 3;
+  let cameraRadius = 60;
+
+  function updateCamera () {
+    camera.position.x = cameraRadius * Math.sin(cameraPhi) * Math.cos(cameraTheta);
+    camera.position.y = cameraRadius * Math.cos(cameraPhi);
+    camera.position.z = cameraRadius * Math.sin(cameraPhi) * Math.sin(cameraTheta);
+    camera.lookAt(0,0,0);
+  }
+  updateCamera();
+
+  renderer.domElement.addEventListener('mousedown', e=> {
+    isDragging = true;
+    prevMouseX = e.clientX;
+    prevMouseY = e.clientY;
+  });
+
+  window.addEventListener('mouseup', () => {isDragging= falsel;});
+
+  window.addEventListener('mousemove', e => {
+    if(!isDragging) return;
+    const dx = e.clientX - prevMouseX ;
+    const dy = e.clientY - prevMouseY ;
+    cameraTheta -= dx * 0.005;
+    cameraPhi = Math.max(Math.min(Math.PI / 2, cameraPhi + dy * 0.005));
+    prevMouseX = e.clientX;
+    prevMouseY = e.clientY;
+    updateCamera();
+  })
+
+renderer.domElement.addEventListener('wheel', e=> {
+  cameraRadius = Math.max(10, Math.min(200,cameraRadius + e.deltaY * 0.1));
+  updateCamera();
+}, {passive :true});
+
+//planet orbits
+let earthAngle = 0;
+let marsAngle = 1.2;
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  sun.rotation.y += 0.002;
+
+  earthAngle += 0.010;
+  earth.position.x = Math.cos(earthAngle) * 20;
+  earth.postition.y = Math.sin(earthAngle) * 20;
+  mars.rotation.y += 0.015;
+
+  renderer.render(scene,camera);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
   </script>
 </body>
