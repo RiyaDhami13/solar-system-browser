@@ -161,7 +161,14 @@
       color: 0xffffff, size: 0.25, sizeAttenuation: true
     })));
 
-    
+    //flying to planets
+    function flyToPlanet(mesh) {
+      const data = mesh.userData;
+      tgtLook.set(mesh.position.x, mesh.position.y, mesh.position.z);
+      tgtRadius = data.radius * 6 + 4;
+    }
+
+
     // SUN
     
     const sun = new THREE.Mesh(
@@ -240,19 +247,26 @@
 
     
     // CAMERA CONTROLS
+    let camRadius = 90;
+    let camTheta = Math.PI / 8;
+    let camPhi = Math.PI / 3;
+    let tgtTheta = Math.PI / 8;
+    let tgtPhi = Math.PI / 3;
+    let tgtRadius = 90;
+    let lookTarget = new THREE.Vector3(0, 0, 0);
+    let tgtLook = new THREE.Vector3(0, 0, 0);
   
-    let isDragging  = false;
-    let prevMouseX  = 0;
-    let prevMouseY  = 0;
-    let camTheta    = Math.PI / 8;
-    let camPhi      = Math.PI / 3;
-    let camRadius   = 90;
-
     function updateCamera() {
-      camera.position.x = camRadius * Math.sin(camPhi) * Math.cos(camTheta);
-      camera.position.y = camRadius * Math.cos(camPhi);
-      camera.position.z = camRadius * Math.sin(camPhi) * Math.sin(camTheta);
-      camera.lookAt(0, 0, 0);
+
+      camTheta += (tgtTheta - camTheta) * 0.06;
+      camPhi += (tgtPhi - camPhi) * 0.06;
+      camRadius += (tgtRadius - camRadius) * 0.06;
+      lookTarget.lerp(tgtLook, 0.06);
+
+      camera.position.x = lookTarget.x + camRadius * Math.sin(camPhi) * Math.cos(camTheta);
+      camera.position.y = lookTarget.y + camRadius * Math.cos(camPhi);
+      camera.position.z = lookTarget.z + camRadius * Math.sin(camPhi) * Math.sin(camTheta);
+      camera.lookAt(lookTarget);
     }
     updateCamera();
 
@@ -261,18 +275,21 @@
       prevMouseX = e.clientX;
       prevMouseY = e.clientY;
     });
+
+
     window.addEventListener('mouseup', () => { isDragging = false; });
     window.addEventListener('mousemove', e => {
       if (!isDragging) return;
-      camTheta -= (e.clientX - prevMouseX) * 0.005;
-      camPhi = Math.max(0.15, Math.min(Math.PI / 2.1,
-        camPhi + (e.clientY - prevMouseY) * 0.005));
+      tgtTheta -= (e.clientX - prevMouseX) * 0.005;
+      tgtPhi = Math.max(0.15, Math.min(Math.PI / 2.1,
+        tgtPhi + (e.clientY - prevMouseY) * 0.005));
       prevMouseX = e.clientX;
       prevMouseY = e.clientY;
       updateCamera();
     });
+
     renderer.domElement.addEventListener('wheel', e => {
-      camRadius = Math.max(8, Math.min(300, camRadius + e.deltaY * 0.1));
+      tgtRadius = Math.max(4, Math.min(300, tgtRadius + e.deltaY * 0.08));
       updateCamera();
     }, { passive: true });
 
@@ -288,9 +305,10 @@
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const hits = raycaster.intersectObjects(planetMeshes);
+
       if (hits.length > 0) {
-        const data = hits[0].object.userData;
-        showInfo(data);
+        flyToPlanet(hits[0].object);
+        showInfo(hits[0].object.userData);
       }
     });
 
@@ -334,10 +352,10 @@
     });
 
     document.getElementById('reset-btn').addEventListener('click', () => {
-      camTheta  = Math.PI / 8;
-      camPhi    = Math.PI / 3;
-      camRadius = 90;
-      updateCamera();
+      tgtTheta  = Math.PI / 8;
+      tgtPhi    = Math.PI / 3;
+      tgtRadius = 90;
+      tgtLook.set(0, 0, 0);
       document.getElementById('info-panel').classList.remove('visible');
     });
 
@@ -361,6 +379,7 @@
         });
       }
 
+      updateCamera();
       renderer.render(scene, camera);
     }
 
