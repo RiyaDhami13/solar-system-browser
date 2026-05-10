@@ -32,40 +32,83 @@
       pointer-events:none; z-index:10;
     }
     #info-panel {
-      position:fixed; bottom:2rem; left:1.5rem;
-      width:220px;
-      background:rgba(2,5,16,0.85);
-      border:1px solid rgba(0,229,255,0.15);
-      border-radius:6px; padding:1rem;
-      opacity:0; transform:translateY(8px);
-      transition:all 0.3s;
-      pointer-events:none; z-index:10;
+      position:fixed; right: 0; bottom: 0; top: 0; 
+      width:300px;
+      background:rgba(2,5,16,0.97);
+      border-left:1px solid rgba(0,229,255,0.12);
+      padding:2rem 1.5rem 1.5rem;
+      transform:translateX(100%);
+      transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      pointer-events:none; z-index:20;
+      overflow-y: auto;
     }
-    #info-panel.visible { opacity:1; transform:translateY(0); }
-    #info-panel .p-name {
-      font-size:1rem; color:#F5C842;
-      letter-spacing:0.1em; margin-bottom:0.6rem;
-      padding-bottom:0.6rem;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
-    #info-panel .p-row {
-      font-size:0.7rem; color:rgba(200,223,245,0.6);
-      margin:0.3rem 0; display:flex;
-      justify-content:space-between;
-    }
-    #info-panel .p-row span { color:rgba(200,223,245,0.9); }
-    #instructions {
-      position:fixed; bottom:1.5rem; left:50%;
-      transform:translateX(-50%);
-      font-size:0.6rem; color:rgba(200,223,245,0.25);
-      letter-spacing:0.1em; text-align:center;
-      pointer-events:none; z-index:10; white-space:nowrap;
-    }
-    #controls {
+
+#info-panel.visible {
+  transform:translateX(0);
+  pointer-events:auto;
+}
+
+
+#panel-close {
+  position:absolute; top:1rem; right:1rem;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  color:rgba(200,223,245,0.6);
+  border-radius:50%; width:28px; height:28px;
+  cursor:pointer; font-size:0.8rem;
+}
+
+#p-type-label {
+  font-size:0.6rem; color:rgba(0,229,255,0.6);
+  letter-spacing:0.2em; text-transform:uppercase;
+  margin-bottom:0.3rem;
+}
+#p-name {
+  font-size:1.8rem; color:#F5C842;
+  letter-spacing:0.05em;
+  margin-bottom:1.2rem; padding-bottom:1rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+#panel-tabs {
+  display:flex; margin-bottom:1.2rem;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.tab {
+  flex:1; padding:0.5rem 0;
+  background:none; border:none;
+  border-bottom:2px solid transparent;
+  color:rgba(200,223,245,0.35);
+  cursor:pointer; font-family:monospace;
+  font-size:0.62rem; letter-spacing:0.1em;
+  text-transform:uppercase; transition:all 0.2s;
+}
+.tab.active { color:#F5C842; border-bottom-color:#F5C842; }
+#panel-content {
+  font-size:0.78rem;
+  color:rgba(200,223,245,0.7);
+  line-height:1.7;
+}
+
+.fact-row {
+  display:flex; justify-content:space-between;
+  padding:0.4rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  font-size:0.72rem;
+}
+.fact-row .label { color:rgba(200,223,245,0.4); }
+.fact-row .value { color:rgba(200,223,245,0.9); }
+.milestone { display:flex; gap:0.8rem; padding-bottom:1rem; }
+.milestone-year { font-size:0.75rem; color:#F5C842; min-width:36px; padding-top:2px; }
+.milestone-event { font-size:0.72rem; color:rgba(200,223,245,0.65); line-height:1.5; }
+
+
+#controls {
       position:fixed; top:1.5rem; right:1.5rem;
       display:flex; align-items:center; gap:0.8rem;
       z-index:10;
     }
+
     .ctrl-btn {
       padding:0.35rem 0.9rem;
       background:rgba(0,229,255,0.07);
@@ -98,12 +141,16 @@
 
   <div id="tooltip"></div>
 
-  <div id="info-panel">
-    <div class="p-name" id="p-name">—</div>
-    <div class="p-row">Orbit period <span id="p-period">—</span></div>
-    <div class="p-row">Temperature  <span id="p-temp">—</span></div>
-    <div class="p-row">Moons        <span id="p-moons">—</span></div>
-    <div class="p-row">Type         <span id="p-type">—</span></div>
+  <div id ="info-panel">
+    <button id="panel-close"></button>
+    <div id="p-type-label">-</div>
+    <div id="p-name">-</div>
+    <div id="panel-tabs">
+      <button class="tab active" data-tab="facts">Facts</button>
+      <button class="tab" data-tab="milestones">Milestones</button>
+      <button class="tab" data-tab="funfact">Did You Know</button>
+    </div>
+    <div id="panel-content"></div>
   </div>
 
   <div id="instructions">
@@ -331,16 +378,52 @@
 
 
     // INFO PANEL
-    
+    let currentPlanetData = null;
     function showInfo(data) {
+      currentPlanetData = data;
+      document.getElementById('p-type-label').textContent = data.type;
       document.getElementById('p-name').textContent   = data.name;
-      document.getElementById('p-period').textContent = data.period;
-      document.getElementById('p-temp').textContent   = data.temp;
-      document.getElementById('p-moons').textContent  = data.moons;
-      document.getElementById('p-type').textContent   = data.type;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelector('[data-tab="facts"]').classList('active');
+      renderTab('facts',data);
       document.getElementById('info-panel').classList.add('visible');
     }
 
+    function renderTab(tab, data) {
+  const content = document.getElementById('panel-content');
+  if (tab === 'facts') {
+    content.innerHTML =
+      '<div class="fact-row"><span class="label">Type</span><span class="value">' + data.type + '</span></div>' +
+      '<div class="fact-row"><span class="label">Orbit Period</span><span class="value">' + data.period + '</span></div>' +
+      '<div class="fact-row"><span class="label">Temperature</span><span class="value">' + data.temp + '</span></div>' +
+      '<div class="fact-row"><span class="label">Moons</span><span class="value">' + data.moons + '</span></div>';
+  }
+    if (tab === 'milestones') {
+    content.innerHTML = data.milestones.map(m =>
+      '<div class="milestone">' +
+        '<div class="milestone-year">' + m.year + '</div>' +
+        '<div class="milestone-event">' + m.event + '</div>' +
+      '</div>'
+    ).join('');
+  }
+  if (tab === 'funfact') {
+    content.innerHTML = '<p style="color:rgba(200,223,245,0.75);line-height:1.8;font-size:0.8rem">' + data.fact + '</p>';
+  }
+}
+
+document.getElementById('panel-tabs').addEventListener('click', e => {
+  const tab = e.target.dataset.tab;
+  if (!tab || !currentPlanetData) return;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  renderTab(tab, currentPlanetData);
+});
+
+document.getElementById('panel-close').addEventListener('click', () => {
+  document.getElementById('info-panel').classList.remove('visible');
+  tgtLook.set(0, 0, 0);
+  tgtRadius = 90;
+});
     
     // PAUSE + RESET
 
