@@ -384,7 +384,7 @@
       document.getElementById('p-type-label').textContent = data.type;
       document.getElementById('p-name').textContent   = data.name;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelector('[data-tab="facts"]').classList('active');
+      document.querySelector('[data-tab="facts"]').classList.add('active');
       renderTab('facts',data);
       document.getElementById('info-panel').classList.add('visible');
     }
