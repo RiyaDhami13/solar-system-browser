@@ -537,8 +537,9 @@ document.getElementById('panel-close').addEventListener('click', () => {
 
       if (!isPaused) {
         // Rotate sun
-        sun.rotation.y += 0.002;
-
+        sun.material.uniform.uTime.value += 0.005;
+        sun.rotation.y += 0.001;
+        
         // Orbit all planets
         planetMeshes.forEach((mesh, i) => {
           const data = PLANETS[i];
