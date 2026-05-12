@@ -159,6 +159,64 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+  <!--Sun vertex shader-->
+  <script id="sunVertexShader" type="x-Shader/x-Vertex">
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  </script>
+
+  <!--Sun Fragment Shader-->
+  <script id="sunFragmentShader" type="x-shader/x-fragment">
+    uniform float uTime;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+
+
+
+  float noise(vec3 p) {
+    return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453);
+  }
+  
+  <!--Smoother noise-->
+    float smoothNoise(vec3 p) {
+      vec3 i = floor(p);
+      vec3 f = fract(p);
+      f = f * f * (3.0-2.0 * f);
+      return mix(
+        mix(mix(noise(i), noise(i+vec3(1,0,0)), f.x),
+          mix(noise(i+vec3(0,1,0)), noise(i+vec3(1,1,0)), f.x), f.y),
+      mix(mix(noise(i+vec3(0,0,1)), noise(i+vec3(1,0,1)), f.x),
+          mix(noise(i+vec3(0,1,1)), noise(i+vec3(1,1,1)), f.x), f.y),
+      f.z
+      );
+    }
+
+    void main() {
+      float n = smoothNoise(vPosition * 1.8 + uTime * 0.12);
+      n += 0.5 * smoothNoise(vPosition * 3.6 + uTime * 0.20);
+      n += 0.25 * smoothNoise(vPosition * 7.2 + uTime * 0.30);
+      n /= 1.75;
+
+      vec3 deepColor = vec3(0.95,0.20,0.00);
+      vec3 midColor = vec3(1.00,0.55,0.00);
+      vec3 brightColor = vec3(1.00,0.90,0.40);
+
+      vec3 col = mix(deepColor,midColor,n);
+      col = mix(col,brightColor,pow(n,2.5));
+
+      float limb = dot(vNormal,vec3(0.0,0.0,1.0));
+      col *= (0.4 * 0.6 * limb);
+
+      gl_FragColor = vec4(col,1.0);
+    }
+  </script>
+
   <script>
 
     
