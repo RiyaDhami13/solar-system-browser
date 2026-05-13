@@ -222,18 +222,65 @@
 
     
     // PLANET DATA
-    
     const PLANETS = [
-      { id:'mercury', name:'Mercury', distance:10,  radius:0.5, color:'#B5B5B5', speed:0.040, tilt:0.03,  period:'88 days',   temp:'-180 to 430°C', moons:0,   type:'Rocky'    },
-      { id:'venus',   name:'Venus',   distance:16,  radius:0.9, color:'#E8C06B', speed:0.016, tilt:177,   period:'225 days',  temp:'465°C avg',     moons:0,   type:'Rocky'    },
-      { id:'earth',   name:'Earth',   distance:22,  radius:1.0, color:'#4B9CD3', speed:0.010, tilt:23.5,  period:'365 days',  temp:'15°C avg',      moons:1,   type:'Rocky'    },
-      { id:'mars',    name:'Mars',    distance:30,  radius:0.6, color:'#C1440E', speed:0.005, tilt:25,    period:'687 days',  temp:'-63°C avg',     moons:2,   type:'Rocky'    },
-      { id:'jupiter', name:'Jupiter', distance:44,  radius:3.0, color:'#C88B3A', speed:0.002, tilt:3,     period:'12 years',  temp:'-110°C',        moons:95,  type:'Gas Giant' },
-      { id:'saturn',  name:'Saturn',  distance:58,  radius:2.5, color:'#E4D191', speed:0.001, tilt:26.7,  period:'29 years',  temp:'-140°C',        moons:146, type:'Gas Giant' },
-      { id:'uranus',  name:'Uranus',  distance:72,  radius:1.8, color:'#7DE8E8', speed:0.0005,tilt:97.8,  period:'84 years',  temp:'-197°C',        moons:28,  type:'Ice Giant' },
-      { id:'neptune', name:'Neptune', distance:85,  radius:1.6, color:'#4B70DD', speed:0.0002,tilt:28,    period:'165 years', temp:'-201°C',        moons:16,  type:'Ice Giant' },
-    ];
-
+  { id:'mercury', name:'Mercury', distance:10, radius:0.5, color:'#B5B5B5', speed:0.040, tilt:0.03, period:'88 days', temp:'-180 to 430°C', moons:0, type:'Rocky',
+    fact: 'A year on Mercury is just 88 Earth days, but a single day lasts 59 Earth days.',
+    milestones: [
+      { year:'1974', event:'Mariner 10 — first spacecraft to visit Mercury' },
+      { year:'2011', event:'MESSENGER — first spacecraft to orbit Mercury' }
+    ]
+  },
+  { id:'venus', name:'Venus', distance:16, radius:0.9, color:'#E8C06B', speed:0.016, tilt:177, period:'225 days', temp:'465°C avg', moons:0, type:'Rocky',
+    fact: 'Venus rotates backwards compared to most planets — the Sun rises in the west and sets in the east.',
+    milestones: [
+      { year:'1970', event:'Venera 7 — first spacecraft to land on another planet' },
+      { year:'1982', event:'Venera 13 — survived Venus surface for 127 minutes' }
+    ]
+  },
+  { id:'earth', name:'Earth', distance:22, radius:1.0, color:'#4B9CD3', speed:0.010, tilt:23.5, period:'365 days', temp:'15°C avg', moons:1, type:'Rocky',
+    fact: 'Earth is the only known planet with liquid water on its surface and confirmed life.',
+    milestones: [
+      { year:'1957', event:'Sputnik — first satellite launched into Earth orbit' },
+      { year:'1969', event:'Apollo 11 — first humans walk on the Moon' }
+    ]
+  },
+  { id:'mars', name:'Mars', distance:30, radius:0.6, color:'#C1440E', speed:0.005, tilt:25, period:'687 days', temp:'-63°C avg', moons:2, type:'Rocky',
+    fact: 'Mars has the tallest volcano in the solar system — Olympus Mons, about 3x the height of Everest.',
+    milestones: [
+      { year:'1997', event:'Pathfinder — first Mars rover (Sojourner) deployed' },
+      { year:'2021', event:'Ingenuity — first powered flight on another planet' }
+    ]
+  },
+  { id:'jupiter', name:'Jupiter', distance:44, radius:3.0, color:'#C88B3A', speed:0.002, tilt:3, period:'12 years', temp:'-110°C', moons:95, type:'Gas Giant',
+    fact: 'Jupiter\'s Great Red Spot is a storm that has been raging for over 350 years.',
+    milestones: [
+      { year:'1979', event:'Voyager 1 discovers Jupiter\'s rings and volcanic moon Io' },
+      { year:'1995', event:'Galileo — first spacecraft to orbit Jupiter' }
+    ]
+  },
+  { id:'saturn', name:'Saturn', distance:58, radius:2.5, color:'#E4D191', speed:0.001, tilt:26.7, period:'29 years', temp:'-140°C', moons:146, type:'Gas Giant',
+    fact: 'Saturn is the least dense planet — it would float if placed in a large enough body of water.',
+    milestones: [
+      { year:'1980', event:'Voyager 1 provides first detailed images of Saturn\'s rings' },
+      { year:'2004', event:'Cassini enters Saturn orbit, begins 13-year mission' }
+    ]
+  },
+  { id:'uranus', name:'Uranus', distance:72, radius:1.8, color:'#7DE8E8', speed:0.0005, tilt:97.8, period:'84 years', temp:'-197°C', moons:28, type:'Ice Giant',
+    fact: 'Uranus rotates on its side with an axial tilt of 98°, likely from an ancient collision.',
+    milestones: [
+      { year:'1781', event:'William Herschel discovers Uranus — first planet found with a telescope' },
+      { year:'1986', event:'Voyager 2 — only spacecraft to ever visit Uranus' }
+    ]
+  },
+  { id:'neptune', name:'Neptune', distance:85, radius:1.6, color:'#4B70DD', speed:0.0002, tilt:28, period:'165 years', temp:'-201°C', moons:16, type:'Ice Giant',
+    fact: 'Neptune has winds up to 2,100 km/h — the fastest recorded in the solar system.',
+    milestones: [
+      { year:'1846', event:'Neptune discovered using mathematical predictions before direct observation' },
+      { year:'1989', event:'Voyager 2 — only spacecraft to ever visit Neptune' }
+    ]
+  },
+];
+    
     
     // SCENE SETUP
   
@@ -490,11 +537,11 @@ renderer.domElement.addEventListener('mousedown', e => {
       '<div class="fact-row"><span class="label">Temperature</span><span class="value">' + data.temp + '</span></div>' +
       '<div class="fact-row"><span class="label">Moons</span><span class="value">' + data.moons + '</span></div>';
   }
-}
+
     if (tab === 'milestones') {
       const milestones = data.milestones || [];
       if (milestones.length === 0){
-    content.innerHTML = 'p style = "color:rgba(200,223,245,0.75)">No milestone data available.</p>';
+    content.innerHTML = '<p style = "color:rgba(200,223,245,0.75)">No milestone data available.</p>';
       } else {
         content.innerHTML = milestones.map(m =>
       '<div class="milestone">' +
@@ -503,10 +550,12 @@ renderer.domElement.addEventListener('mousedown', e => {
       '</div>'
     ).join('');
   }
-  if (tab === 'funfact') {
-    const fact = data.fact || 'No fun fact available yet.';
-    content.innerHTML = '<p style="color:rgba(200,223,245,0.75);line-height:1.8;font-size:0.8rem">' + fact + '</p>';
-  }
+}
+
+if (tab === 'funfact') {
+  const fact = data.fact || 'No fun fact available yet.';
+  content.innerHTML = '<p style="color:rgba(200,223,245,0.75);line-height:1.8;font-size:0.8rem">' + fact + '</p>';
+}
 }
 
 document.getElementById('panel-tabs').addEventListener('click', e => {

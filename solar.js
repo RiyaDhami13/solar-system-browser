@@ -1,15 +1,14 @@
 const canvas = document.getElementById('solarCanvas');
 const ctx = canvas.getContext('2d');
-const tooltip = document.getElementById9('tooltip');
+const tooltip = document.getElementById('tooltip');
 const infoPanel = document.getElementById('infoPanel');
 const pauseBt = document.getElementById('pauseBtn');
 const resetBtn = document.getElementById('resetBtn');
 const speedSlider = document.getElementById('speedSlider');
 const pName = document.getElementById('p-name');
 const pPeriod = document.getElementById('p-period');
-const pPeriod = document.getElementById('p-period');
 const pTemp = document.getElementById('p-temp');
-const pMoons = document.getElementsById('p-moons');
+const pMoons = document.getElementById('p-moons');
 const pType = document.getElementById('p-type');
 
 //Canvas resizing
@@ -156,7 +155,7 @@ ctx.fill();
 //drawwing orbit ring
 function drawOrbitRing(cx,cy,planet) {
   ctx.beginPath();
-  ctx.arc(cx, cy, planet.orbitRadius * zoomLevel,0, Math.PI *2);
+  ctx.arc(cx, cy, planet.distance * zoomLevel,0, Math.PI *2);
   if(selectedPlanet?.id === planet.id) {
     ctx.strokeStyle = 'rgba(245,200,66,0.35)';
     ctx.lineWidth = 1.5;
@@ -169,7 +168,7 @@ function drawOrbitRing(cx,cy,planet) {
 
 //drawing planets
 function drawPlanet(cx,cy,planet) {
-  const scaledOrbit = planet.OrbitRadius * zoomLevel;
+  const scaledOrbit = planet.distance * zoomLevel;
   const scaledRadius = Math.max(planet.radius * zoomLevel,2);
 
   const x = cx + Math.cos(planet.angle) * scaledOrbit;
@@ -231,7 +230,7 @@ function showPlanetInfo(planet) {
 //updating planets
 function updatePlanets() {
   if (isPaused) return;
-  planets.forEach(p => { p.angle += p.speed * speedMult; });
+  Planets.forEach(p => { p.angle += p.speed * speedMult; });
 }
 
 //render loop
@@ -241,9 +240,9 @@ function animate() {
   hoveredPlanet = null;
 
   drawStars();
-  planets.forEach(p => drawOrbitRing(center.x, center.y, p));
+  Planets.forEach(p => drawOrbitRing(center.x, center.y, p));
   drawSun(center.x, center.y);
-  planets.forEach(p => drawPlanet(center.x, center.y, p));
+  Planets.forEach(p => drawPlanet(center.x, center.y, p));
 
   if (hoveredPlanet) {
     tooltip.textContent   = hoveredPlanet.name;
@@ -281,7 +280,7 @@ pauseBtn.addEventListener('click', () => {
 });
 
 resetBtn.addEventListener('click', () => {
-  planets.forEach((p, i) => { p.angle = i * 0.8; });
+  Planets.forEach((p, i) => { p.angle = i * 0.8; });
   zoomLevel      = 1;
   selectedPlanet = null;
   infoPanel.classList.remove('visible');
@@ -293,9 +292,9 @@ speedSlider.addEventListener('input', e => {
 
 document.addEventListener('keydown', e => {
   const index = parseInt(e.key) - 1;
-  if (index >= 0 && index < planets.length) {
-    selectedPlanet = planets[index];
-    showPlanetInfo(planets[index]);
+  if (index >= 0 && index < Planets.length) {
+    selectedPlanet = Planets[index];
+    showPlanetInfo(Planets[index]);
   }
 });
 
