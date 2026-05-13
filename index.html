@@ -490,8 +490,13 @@ renderer.domElement.addEventListener('mousedown', e => {
       '<div class="fact-row"><span class="label">Temperature</span><span class="value">' + data.temp + '</span></div>' +
       '<div class="fact-row"><span class="label">Moons</span><span class="value">' + data.moons + '</span></div>';
   }
+}
     if (tab === 'milestones') {
-    content.innerHTML = data.milestones.map(m =>
+      const milestones = data.milestones || [];
+      if (milestones.length === 0){
+    content.innerHTML = 'p style = "color:rgba(200,223,245,0.75)">No milestone data available.</p>';
+      } else {
+        content.innerHTML = milestones.map(m =>
       '<div class="milestone">' +
         '<div class="milestone-year">' + m.year + '</div>' +
         '<div class="milestone-event">' + m.event + '</div>' +
@@ -499,7 +504,8 @@ renderer.domElement.addEventListener('mousedown', e => {
     ).join('');
   }
   if (tab === 'funfact') {
-    content.innerHTML = '<p style="color:rgba(200,223,245,0.75);line-height:1.8;font-size:0.8rem">' + data.fact + '</p>';
+    const fact = data.fact || 'No fun fact available yet.';
+    content.innerHTML = '<p style="color:rgba(200,223,245,0.75);line-height:1.8;font-size:0.8rem">' + fact + '</p>';
   }
 }
 
