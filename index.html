@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solar System Browser — 3D</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -142,7 +143,7 @@
   <div id="tooltip"></div>
 
   <div id ="info-panel">
-    <button id="panel-close"></button>
+    <button id="panel-close" type="button" aria-label="Close information panel">×</button>
     <div id="p-type-label">-</div>
     <div id="p-name">-</div>
     <div id="panel-tabs">
@@ -404,7 +405,11 @@
     }
     updateCamera();
 
-    renderer.domElement.addEventListener('mousedown', e => {
+let isDragging  = false;
+let prevMouseX = 0;
+let prevMouseY = 0;
+
+renderer.domElement.addEventListener('mousedown', e => {
       isDragging = true;
       prevMouseX = e.clientX;
       prevMouseY = e.clientY;
@@ -537,7 +542,7 @@ document.getElementById('panel-close').addEventListener('click', () => {
 
       if (!isPaused) {
         // Rotate sun
-        sun.material.uniform.uTime.value += 0.005;
+        sun.material.uniforms.uTime.value += 0.005;
         sun.rotation.y += 0.001;
         
         // Orbit all planets
