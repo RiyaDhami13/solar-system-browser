@@ -279,7 +279,7 @@
     const sunMaterial = new THREE.ShaderMaterial({
       vertexShader: document.getElementById('sunVertexShader').textContent,
       fragmentShader:document.getElementById('sunFragmentShader').textContent,
-      uniform:{
+      uniforms:{
         uTime:{value:0}
       }
     });
