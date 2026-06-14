@@ -1,64 +1,29 @@
-# ☀ Solar System Browser -- 3D
+# Solar System Browser 3D
 
-An interactive 3D solar system simulation built with Three.js and custom GLSL shaders.
+A 3D solar system simulation I built using Three.js and custom GLSL shaders for a Hack Club project. It took about 10 hours to build, wrap my head around the 3D math, asset hunt, and debug. 
 
-🔗 **[Live Demo](https://riyadhami13.github.io/solar-system-browser/)**
+The app lets you look at all 8 planets orbiting in real time, zoom/rotate the camera, and click on any planet to pull up a local data panel with facts and milestones.
 
----
+## Tech Stack
+* Frontend: Vanilla HTML5, CSS3
+* 3D Engine: Three.js (r128)
+* Graphics: GLSL (Custom vertex and fragment shaders for the sun texture)
+* Development Time: 10 Hours (Mostly spent on shader debugging, orbital math, and UI styling)
 
-##Features
+## How the Code Works
 
-- **Custom GLSL sun shader** — animated procedural noise gives the sun a realistic fiery surface
-- **All 8 planets** orbiting in real time with accurate axial tilts and relative speeds
-- **Saturn's rings** rendered with double-sided geometry
-- **Starfield** of 2000 stars filling the background
-- **Click any planet** to fly the camera to it and open an info panel
-- **Info panel** with three tabs per planet — Facts, Milestones, and Did You Know
-- **Drag to orbit** the camera around the solar system
-- **Scroll to zoom** in and out
-- **Pause / Resume** and **Reset View** controls
+Everything is packed inside `index.html` to keep it running smoothly without any heavy build tools or npm installs:
 
-----
+* **3D Canvas and Camera:** I used Three.js to set up the core 3D scene, renderer, and an OrbitControls loop so you can drag to rotate the camera and scroll to zoom. The background starfield is generated dynamically by spawning a matrix of 2000 randomized point vertices.
+* **Custom Sun Shader:** Instead of just pasting a flat image texture onto a sphere, I wrote custom GLSL vertex and fragment shaders. It uses animated procedural noise calculations directly on the GPU to give the sun a moving, fiery surface look.
+* **Orbital Math and Geometry:** All 8 planets are loaded as separate sphere geometries with their own texture maps, set to orbit at different relative speeds and accurate axial tilts. Saturn's rings are rendered using a flat, double-sided ring geometry.
+* **Raycasting and DOM UI:** To make the planets interactive, I used a Three.js Raycaster. When you click anywhere on the 3D canvas, it calculates where your mouse intersects in 3D space. If it hits a planet, a JavaScript function triggers a smooth camera interpolation (fly-to effect) and updates a standard HTML info panel on the screen using basic DOM targeting.
 
-##Built With
+## How to Run it Locally
 
-- [Three.js r128](https://threejs.org/) — 3D rendering
-- GLSL — custom vertex and fragment shaders for the sun
-- Vanilla HTML, CSS, JavaScript — no build tools or frameworks
+No installation or node modules needed. 
 
------
-
-## How to Run Locally
- 
-Just open `index.html` in a browser — no install needed.
- 
+1. Clone the project:
 ```bash
-git clone https://github.com/RiyaDhami13/solar-system-browser.git
-cd solar-system-browser
-open index.html
-```
- 
----
- 
-## Controls
- 
-| Action | Control |
-|---|---|
-| Orbit camera | Click and drag |
-| Zoom | Scroll wheel |
-| Inspect planet | Click on it |
-| Close panel | × button |
-| Pause animation | Pause button |
-| Reset camera | Reset View button |
- 
----
- 
-## Project Structure
- 
-```
-index.html       — everything (HTML, CSS, JS, GLSL shaders)
-```
- 
----
- 
-*Built for Hack Club — Week 2 project*
+   git clone [https://github.com/RiyaDhami13/solar-system-browser.git](https://github.com/RiyaDhami13/solar-system-browser.git)
+   cd solar-system-browser
